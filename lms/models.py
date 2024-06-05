@@ -24,8 +24,8 @@ class Lesson(models.Model):
     name = models.CharField(max_length=150, verbose_name='название')
     description = models.TextField(max_length=500, **NULLABLE, verbose_name='описание')
     preview = models.ImageField(upload_to='lms/lesson/', **NULLABLE, verbose_name='превью')
-    link_to_video = models.CharField(max_length=200, verbose_name='ссылка на видео')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
+    link_to_video = models.CharField(max_length=200, **NULLABLE, verbose_name='ссылка на видео')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
 
     def __str__(self):
         return f'Урок: {self.name} курса: {self.course}'
