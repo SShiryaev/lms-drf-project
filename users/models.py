@@ -6,8 +6,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 class User(AbstractUser):
     """
-    Модель пользователя
-    с наследованием от AbstractUser
+    Модель пользователя с наследованием от AbstractUser
     исключением поля username
     и переопределением USERNAME_FIELD на поле email
     """
