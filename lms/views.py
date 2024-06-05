@@ -1,9 +1,7 @@
-from django.shortcuts import render
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, viewsets
-from lms.serializers import CourseSerializer, LessonSerializer
-from lms.models import Course, Lesson
+from rest_framework import viewsets
+
+from lms.models import Course
+from lms.serializers import CourseSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
