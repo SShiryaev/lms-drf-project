@@ -1,14 +1,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from lms.models import Course, Lesson
+
 NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
     """
-    Модель пользователя с наследованием от AbstractUser
-    исключением поля username
-    и переопределением USERNAME_FIELD на поле email
+    Модель пользователя с наследованием от AbstractUser, исключением поля username
+    и переопределением USERNAME_FIELD на поле email. Связанна с моделью Payments отношением One to many.
     """
 
     username = None
@@ -27,3 +28,29 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+
+class Payment(models.Model):
+    """Модель платежа. Имеет внешний ключ на модели User, Course, Lesson."""
+
+    # Сопоставление или итерация для использования в качестве вариантов для поля method.
+    METHOD_CHOICES = {
+        'TRANSFER': 'Перевод на счет',
+        'CASH': 'Наличные',
+    }
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='дата оплаты')
+    course = models.ForeignKey(Course, **NULLABLE, on_delete=models.SET_NULL, verbose_name='оплаченный курс')
+    lesson = models.ForeignKey(Lesson, **NULLABLE, on_delete=models.SET_NULL, verbose_name='оплаченный урок')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="сумма оплаты")
+    method = models.CharField(max_length=15, choices=METHOD_CHOICES, default='TRANSFER', verbose_name="Способ оплаты")
+
+    def __str__(self):
+        return (f'{self.user} оплатил {self.course if self.course else self.lesson}, датой {self.date},'
+                f'на сумму {self.amount}, методом {self.method}.')
+
+    class Meta:
+        verbose_name = 'платеж'
+        verbose_name_plural = 'платежи'
+        ordering = ['-date',]

@@ -1,0 +1,66 @@
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-06-06T21:07:48.892Z",
+        "email": "test@test.ru",
+        "phone": null,
+        "town": null,
+        "avatar": "",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$720000$dY1xtpncTCUvWV2mpfsf6q$QkCUrJRx1yxugMJXAPlWzKfelQjj4lz+GWRgVDlKYXg=",
+        "last_login": "2024-06-07T08:08:06.034Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-06-07T08:07:34.498Z",
+        "email": "admin",
+        "phone": null,
+        "town": null,
+        "avatar": "",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.payment",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "date": "2024-06-07T08:12:17.666Z",
+        "course": 1,
+        "lesson": null,
+        "amount": "0.00",
+        "method": "TRANSFER"
+    }
+},
+{
+    "model": "users.payment",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "date": "2024-06-07T08:12:32.008Z",
+        "course": null,
+        "lesson": 1,
+        "amount": "1.00",
+        "method": "CASH"
+    }
+}
+]

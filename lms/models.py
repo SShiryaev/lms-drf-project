@@ -4,7 +4,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Course(models.Model):
-    """Модель курса lms. Связанна с моделью Lesson отношением One to many"""
+    """Модель курса lms. Связанна с моделями Lesson, Payments отношением One to many"""
 
     name = models.CharField(max_length=50, verbose_name='название')
     preview = models.ImageField(upload_to='lms/course/', **NULLABLE, verbose_name='превью')
@@ -19,7 +19,7 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    """Модель урока lms. Имеет внешний ключ на модель Course"""
+    """Модель урока lms. Имеет внешний ключ на модель Course. Связанна с моделью Payments отношением One to many."""
 
     name = models.CharField(max_length=150, verbose_name='название')
     description = models.TextField(max_length=500, **NULLABLE, verbose_name='описание')

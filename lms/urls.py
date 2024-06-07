@@ -7,7 +7,7 @@ from lms.apps import LmsConfig
 app_name = LmsConfig.name
 
 router = DefaultRouter()
-router.register(r'lms', views.CourseViewSet, basename='lms')
+router.register(r'course', views.CourseViewSet, basename='course')
 
 urlpatterns = [
     path('lesson/create/', views.LessonCreateAPIView.as_view(), name='lesson-create'),
