@@ -14,10 +14,10 @@ class PaymentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор модели пользователя."""
 
-    payment = PaymentSerializer(source='payment_set', many=True)
+    payment = PaymentSerializer(source='payment_set', many=True, read_only=True)
 
     def get_payment(self, instance):
-        return instance.lesson_set.all()
+        return instance.payment_set.all()
 
     class Meta:
         model = User
