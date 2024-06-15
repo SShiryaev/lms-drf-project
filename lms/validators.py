@@ -8,5 +8,6 @@ class LinkToVideoValidator:
     def __call__(self, value):
         url = dict(value).get(self.field)
 
-        if 'youtube.com' not in url:
-            raise ValidationError('Ролик должен быть на www.youtube.com')
+        if url:
+            if 'youtube.com' not in url:
+                raise ValidationError('Ролик должен быть на www.youtube.com')
