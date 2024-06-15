@@ -10,7 +10,7 @@ class User(AbstractUser):
     """
     Модель пользователя с наследованием от AbstractUser, исключением поля username
     и переопределением USERNAME_FIELD на поле email.
-    Связанна с моделями Payments, Course, Lesson отношением One to many.
+    Связанна с моделями Payments, Course, Lesson, Subscription отношением One to many.
     """
 
     username = None
@@ -55,3 +55,15 @@ class Payment(models.Model):
         verbose_name = 'платеж'
         verbose_name_plural = 'платежи'
         ordering = ['-date',]
+
+
+class Subscription(models.Model):
+    """Модель подписки на обновления курса. Имеет внешний ключ на модели User, Course."""
+
+    is_subscribed = models.BooleanField(default=True, verbose_name='подписан')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
