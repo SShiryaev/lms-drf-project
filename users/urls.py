@@ -10,12 +10,13 @@ app_name = UsersConfig.name
 router = DefaultRouter()
 
 urlpatterns = [
-    path('payment/', views.PaymentListAPIView.as_view(), name='payment_list'),
-    path('registration/', views.UserCreateAPIView.as_view(), name='user_registration'),
-    path('', views.UserListAPIView.as_view(), name='user_list'),
-    path('<int:pk>/', views.UserRetrieveAPIView.as_view(), name='user_retrieve'),
-    path('update/<int:pk>/', views.UserUpdateAPIView.as_view(), name='user_update'),
-    path('delete/<int:pk>/', views.UserDestroyAPIView.as_view(), name='user_delete'),
+    path('payment/', views.PaymentListAPIView.as_view(), name='payment-list'),
+    path('registration/', views.UserCreateAPIView.as_view(), name='user-registration'),
+    path('', views.UserListAPIView.as_view(), name='user-list'),
+    path('<int:pk>/', views.UserRetrieveAPIView.as_view(), name='user-retrieve'),
+    path('update/<int:pk>/', views.UserUpdateAPIView.as_view(), name='user-update'),
+    path('delete/<int:pk>/', views.UserDestroyAPIView.as_view(), name='user-delete'),
     path('login/', TokenObtainPairView.as_view(), name='login'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('subscription/', views.SubscriptionCreateAPIView.as_view(), name='subscription'),
 ] + router.urls

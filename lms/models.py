@@ -6,8 +6,8 @@ NULLABLE = {'blank': True, 'null': True}
 
 class Course(models.Model):
     """
-    Модель курса lms. Связанна с моделями Lesson, Payments отношением One to many.
-    Имеет внешний ключ на модель User.
+    Модель курса lms. Связанна с моделями Lesson, Payments, Subscription отношением One to many.
+    Имеет внешний ключ на модель User (AUTH_USER_MODEL).
     """
 
     name = models.CharField(max_length=50, verbose_name='название')

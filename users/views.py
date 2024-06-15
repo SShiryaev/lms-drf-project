@@ -2,9 +2,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from users.models import User, Payment
-from users.serializers import UserSerializer, PaymentSerializer
+from lms.models import Course
+from users.models import User, Payment, Subscription
+from users.serializers import UserSerializer, PaymentSerializer, SubscriptionSerializer
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -19,32 +21,60 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 
 class UserListAPIView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
 
 
 class PaymentListAPIView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'method',)
     ordering_fields = ('date',)
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+
+    def post(self, *args, **kwargs):
+        # Получаем пользователя
+        user = self.request.user
+        # Получаем id курса
+        course_id = self.request.data.get('course')
+        # Получаем объект курса из базы данных
+        course_item = generics.get_object_or_404(Course, pk=course_id)
+
+        # Получаем объект подписки по текущему пользователю и курсу
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
+
+        # Если подписка у пользователя на этот курс есть - удаляем ее
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'подписка удалена'
+        # Если подписки у пользователя на этот курс нет - создаем ее
+        else:
+            Subscription.objects.create(user=user, course=course_item)
+            message = 'подписка добавлена'
+
+        return Response({"message": message})
