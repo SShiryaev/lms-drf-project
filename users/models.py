@@ -44,8 +44,10 @@ class Payment(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name='дата оплаты')
     course = models.ForeignKey(Course, **NULLABLE, on_delete=models.SET_NULL, verbose_name='оплаченный курс')
     lesson = models.ForeignKey(Lesson, **NULLABLE, on_delete=models.SET_NULL, verbose_name='оплаченный урок')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="сумма оплаты")
-    method = models.CharField(max_length=15, choices=METHOD_CHOICES, default='TRANSFER', verbose_name="Способ оплаты")
+    amount = models.PositiveIntegerField(default=0, verbose_name="сумма оплаты")
+    method = models.CharField(max_length=15, choices=METHOD_CHOICES, default='TRANSFER', verbose_name="способ оплаты")
+    session_id = models.CharField(max_length=255, **NULLABLE, verbose_name='id сессии')
+    link = models.URLField(max_length=420, **NULLABLE, verbose_name='ссылка на оплату')
 
     def __str__(self):
         return (f'{self.user} оплатил {self.course if self.course else self.lesson}, датой {self.date},'

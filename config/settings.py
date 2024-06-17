@@ -41,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
 
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'users',
     'lms',
@@ -160,3 +161,5 @@ else:
             "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
             "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     }
+
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
