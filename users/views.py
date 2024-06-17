@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from lms.models import Course
 from users.models import User, Payment, Subscription
 from users.serializers import UserSerializer, PaymentSerializer, SubscriptionSerializer
+from users.services import *
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -41,6 +42,21 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 class UserDestroyAPIView(generics.DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = User.objects.all()
+
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        product = create_stripe_product(payment)
+        price = create_stripe_price(payment.amount, product)
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
 
 
 class PaymentListAPIView(generics.ListAPIView):

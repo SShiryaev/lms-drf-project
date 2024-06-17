@@ -10,6 +10,7 @@ app_name = UsersConfig.name
 router = DefaultRouter()
 
 urlpatterns = [
+    path('payment/create/', views.PaymentCreateAPIView.as_view(), name='payment-create'),
     path('payment/', views.PaymentListAPIView.as_view(), name='payment-list'),
     path('registration/', views.UserCreateAPIView.as_view(), name='user-registration'),
     path('', views.UserListAPIView.as_view(), name='user-list'),
