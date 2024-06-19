@@ -1,11 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
+from rest_framework import generics, views
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from lms.models import Course
 from users.models import User, Payment, Subscription
+from users.tasks import send_email_of_updates
 from users.serializers import UserSerializer, PaymentSerializer, SubscriptionSerializer
 from users.services import *
 
@@ -68,7 +69,7 @@ class PaymentListAPIView(generics.ListAPIView):
     ordering_fields = ('date',)
 
 
-class SubscriptionCreateAPIView(generics.CreateAPIView):
+class SubscriptionAPIView(views.APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
@@ -92,5 +93,6 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
         else:
             Subscription.objects.create(user=user, course=course_item)
             message = 'подписка добавлена'
+            send_email_of_updates.delay(user.email, course_item.pk, 'Course')
 
-        return Response({"message": message})
+        return Response({'message': message})
