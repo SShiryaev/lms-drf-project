@@ -187,6 +187,14 @@ CELERY_TASK_TRACK_STARTED = True
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
+# Настройки для celery-beat
+CELERY_BEAT_SCHEDULE = {
+    'user_deactivation_by_time': {
+        'task': 'users.tasks.user_deactivation_by_time',  # Путь к задаче
+        'schedule': timedelta(days=1),  # Расписание выполнения задачи
+    },
+}
+
 # Настройки почтового сервиса yandex
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
