@@ -19,5 +19,5 @@ urlpatterns = [
     path('delete/<int:pk>/', views.UserDestroyAPIView.as_view(), name='user-delete'),
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
-    path('subscription/', views.SubscriptionCreateAPIView.as_view(), name='subscription'),
+    path('subscription/', views.SubscriptionAPIView.as_view(), name='subscription'),
 ] + router.urls

@@ -13,7 +13,8 @@ class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
     preview = models.ImageField(upload_to='lms/course/', **NULLABLE, verbose_name='превью')
     description = models.TextField(max_length=500, **NULLABLE, verbose_name='описание')
-    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name="владелец")
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+    update = models.DateTimeField(**NULLABLE, verbose_name='дата обновления')
 
     def __str__(self):
         return f'Курс: {self.name}'
@@ -35,7 +36,8 @@ class Lesson(models.Model):
     preview = models.ImageField(upload_to='lms/lesson/', **NULLABLE, verbose_name='превью')
     link_to_video = models.CharField(max_length=200, **NULLABLE, verbose_name='ссылка на видео')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
-    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name="владелец")
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+    update = models.DateTimeField(**NULLABLE, verbose_name='дата обновления')
 
     def __str__(self):
         return f'Урок: {self.name} курса: {self.course}'
