@@ -11,35 +11,35 @@ from users.models import User
 def send_email_of_updates(email, pk, model):
     """Отправляет письмо об обновлении курса/урока"""
 
-    today = timezone.now()
+    now = timezone.now()
 
     if model == 'Lesson':
-        instance = Lesson.objects.filter(pk=pk).first()
-        instance_name = 'урок'
-    elif model == 'Course':
-        instance = Course.objects.filter(pk=pk).first()
-        instance_name = 'курс'
+        material = Lesson.objects.filter(pk=pk).first()
+        material_name = 'урок'
+    else:
+        material = Course.objects.filter(pk=pk).first()
+        material_name = 'курс'
 
     send_mail(
-        subject=f'Обновление {instance_name}а',
-        message=f'Обновились материалы {instance_name}а: "{instance.name}"',
+        subject=f'Обновление {material_name}а',
+        message=f'Обновились материалы {material_name}а: "{material.name}"',
         from_email=EMAIL_HOST_USER,
         recipient_list=[email],
         fail_silently=False,
     )
 
-    instance.update = today
-    instance.save()
+    material.update = now
+    material.save()
 
 
 @shared_task
 def user_deactivation_by_time():
     """Деактивация пользователя, если он не входил более 30 дней"""
 
-    today = timezone.now()
+    now = timezone.now()
     users = User.objects.all()
 
     for user in users:
-        if user.is_active and (today - user.last_login).days > 30:
+        if user.is_active and now - user.last_login.days > 30:
             user.is_active = False
             user.save()

@@ -188,6 +188,9 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Настройки для celery-beat
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Настройки для периодической задачи
 CELERY_BEAT_SCHEDULE = {
     'user_deactivation_by_time': {
         'task': 'users.tasks.user_deactivation_by_time',  # Путь к задаче
